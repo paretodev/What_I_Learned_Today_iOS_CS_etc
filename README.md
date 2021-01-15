@@ -1,6 +1,6 @@
 # Learn Job Seeking The Hard Way
 
-### 1.13(수)에 "귀여운 실패"를 통해 배우게 된 것<br>
+### 1.13(수)의 비료💩용 실패 기록<br>
 
 
 1. TCP vs. UDP의 차이?
@@ -114,6 +114,7 @@ __3. View Controller Life Cycle__<br>
 4. 1st view did appear
 
 
+# 보완 !!
 ## 메모리 사용을 줄여야 하는 이유? 요즘 기기는 램 용량도 좋은데 ??
 1. **사용자 경험**
    1. **앱 런칭 속도 빨라짐.**
@@ -121,5 +122,146 @@ __3. View Controller Life Cycle__<br>
    3. **다른 앱들이 메모리에 머무르는 시간이 길어질 수 있다.**
 
 
+<br>
+<br>
+<br>
+
+## 1.14(목) - 비료💩용 실패 기록 <br>
+
+1. Frame & Bound의 차이?
+  
+   1. Frame : __Superview의 좌표계에 있어, UIView를 감쌀 수 있는 최소 크기의 사각형__ 의 좌표와 사이즈<br>
+   2. Bound : UIView자체의, 좌표와 사이즈<br>
+   3. 두 개의 좌표는 다른 게 자명한데, UIView의 프레임 바운드의 사이즈가 달라지는 경우는?
+       * 사진을 봐봐 !!
+          ![](./images/2021-01-15-09-54-17.png)
+        * 직사각형 모양의 UIView가 50도 rotate됨.
+        * __frame, bound의 width엔 height가 달라질 수 있는 거야?__
+          * frame : UIView를 감싸는 최소 크기의 바운딩 박스임
+            ![](./images/2021-01-15-09-57-08.png)
+          * 회전 후에 이렇게 됨
+            * 이 뷰의 바운드는 여전히
+              * (0,0) 180 210 로 그대로인데,
+            * 그러나 프레임은 슈퍼뷰에서의,
+              * __UIView를 감싸는 최소 크기의 묶음 사각형__ 의 위치와, 사이즈임
+              * x:16, y:43, width : 343, height : 359로 사이즈가 매우 커졌고, 회전 이전에 비해, frame의 좌표도 달라짐.
+            * 예를 들어, __UIView가 viewDidAppear 후에 애니메이션이 적용되어 회전__ 되고, 그 뷰의 프레임을 고려하여 영역이 겹치지 않게 바깥에 다른 뷰를 추가해야하는 경우, 이 개념이 적용될 수 있을 것이다.
+  
+2. 멀티 스레딩 상황에서 공유되는 자원에 대한 동기화 처리? (해당 자원에 대한 동기화 처리)<br>
+   <br>
+    [참고](https://medium.com/swiftcairo/avoiding-race-conditions-in-swift-9ccef0ec0b26)
+    * 임계 구역을 정하고 -> 임계 구역에 진입했을 때, 먼저 진입한 쓰레드가 lock.lock()을 건다. 그리고, 임계 구역에 대한 실행이 끝났을 때에 한해, lock.unlock()을 한다.
+      * 문제점 : 데드락이 발생할 수 있다.
+        * 예를 들어 스레드 1에서는 열쇠1을 들어, 임계 구역1을 잠궈두었고, 스레드 2는 열쇠2를 들어, 임계 구역 2를 잠궈 두었는데, 스레드1에서 진행하고 있는 작업이 마무리 되기 위해, 임계 구역 2에 진입해야 하고 열쇠2가 필요하고, 스레드2의 작업을 끝내기 위해 스레드 1에 진입해야하고 열쇠 1이 필요하다면, 서로가 작업을 끝내고 열쇠를 내려놓을 수 있을 자원을 서로가 들고 있기 때문에, 영원히, 진행되지 못하게 되는 __데드락__ 이 발생할 수 있다.
+        * 임계 구역에 락, 언락을 거는 것은 **데드락** 에 주의하여 사용해야한다.
+    * 임계 구역에 해당하는 작업은!! __Serial Dispatch Queue에서 Serially Schedule__ 한다. 스레드1 스레드2에서 여러 블록을 멀티태스킹하다가, 임계 구역에 해당하는 작업을 DispatchQueue - Serial에 스케쥴링하면, 선후 관계가 생겨, 임계 구역에 진입하는 작업에 있어 순차적으로 진행될 수 있다.  
+  
+
+   <br>
+3. GCD에서 일련의 작업이 백그라운드큐에서 concurrently가 아닌 serially 처리되도록 만들려면?<br> 
+  <br>
+  [스탠포드 iOS 강의 참고](https://www.youtube.com/watch?v=jDYp9toF_7A&t=2066s)<br>
+  [zeddiOS 참고](https://zeddios.tistory.com/516)
+  <br>
+     * main(UI, serial)큐는 코드 블록들을 시리얼하게 처리하지만, 유아이 작업 외의 블락 가능성이 있는 작업을 디스패치 하면 안 된다.반면, global(non-UI, concurrent)는 일련의 코드 블록들을 이전 작업의 완료 여부와 관계없이 가용한 쓰레드에서 진행시켜 버려, 각 블록의 완료 순서에 대한 컨트롤이 없다. 만약, 일련의 작업이 선후관계를 가져야하고, 의존성이 있다면 문제가 생긴다.
+    * __메인 큐__ 가 아닌 큐에서 멀티스레딩을 하면서, 일련의 블록들을 __serially dispatch__ 하고 싶으면, __"serial한 큐를 직접 인스턴스화 하여"__ 사용하면 된다. 
+      ```swift
+      let zeddQueue = DispatchQueue(label: "zedd")
+
+
+
+      zeddQueue.async {
+
+          for i in 1...5 {
+
+              print("\(i)🐶")
+
+          }
+
+          print("==================")
+
+      }
+
+      zeddQueue.async {
+
+          for i in 200...205 {
+
+              print("\(i)😍")
+
+          }
+
+          print("==================")
+
+      }
+
+
+
+      for i in 100...105 {
+
+          print("\(i)👻")
+
+          
+
+      }
+
+      출처: https://zeddios.tistory.com/516 [ZeddiOS]  
+      ```
+      ![](./images/2021-01-15-11-27-49.png)<br>
+
+
+  
+
+  <br>
+4. __iOS 개발시 디버깅 어떻게 함?__ 🏋🏻‍♀️🔥 <br><br>
+5. struct vs. class 차이<br><br>
+   1. class pass by reference<br>
+      * gives pointer when passed<br>
+      * refering to the same instance<br>
+      * (+) inheritance is possible<br>
+   2. struct pass by value<br>
+      * copied when passed<br>
+<br>
+
+7. ⭐️⭐️ Observable Object를 직접 구현한다면 ? 어떻게 옵저버 패턴을 구현할 것인가 ⭐️⭐️ <br><br>
+  
+  [참고](https://linsaeng.tistory.com/6)<br>
+  [디자인 패턴 - 공부할 것](https://linsaeng.tistory.com/category/Swift/%EB%94%94%EC%9E%90%EC%9D%B8%ED%8C%A8%ED%84%B4)<br>
+
+   ```swift
+  
+  //옵저버들이 어떻게 업데이트할 지, 프로토콜, 새로운 속성값을 받는 업데이트 메서드 정의
+  protocol Observer {
+    func update(_ notifyValue: Int) 
+  }
+
+   class Subject {
+
+    private var observers: [Observer] = [Observer]() // 옵저버들은 피-관찰 객체의 옵저버 리스트에 등록
+    private var value: Int = Int()
+
+    //해당 객체에 대하여 관찰하고자 하는 속성 프로퍼티의 -> 세터에, notify()를 호출해준다.
+    var number: Int {
+        set {
+            value = number
+            notify()
+        }
+        get {
+            return value 
+        }
+    }
+
+    //옵저버를 객체의 옵저버 리스트에 더해주는 함수
+    func attachObserver(_ observer: Observer) {
+        observers.append(observer)
+    }
+    
+    //옵저버 알림 - 속성에 새로운 값이 셋 되었을 때, 옵저버로서 프로토콜을 채택한 관찰자 님들의 update함수를 바뀐 속성과 함께 호출해주는 -> 노티파이!!
+    func notify() {
+        for observer in observers {
+            observer.update(number)
+        }
+    }
+}
+```
 
 
