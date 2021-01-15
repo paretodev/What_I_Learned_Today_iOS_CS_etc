@@ -160,7 +160,8 @@ __3. View Controller Life Cycle__<br>
     * __메인 큐__ 가 아닌 큐에서 멀티스레딩을 하면서, 일련의 블록들을 __serially dispatch__ 하고 싶으면, __"serial한 큐를 직접 인스턴스화 하여"__ 사용하면 된다.<br>
     <br>
 
-    [출처](https://zeddios.tistory.com/516)<br>
+    [출처](https://zeddios.tistory.com/516)
+    <br>
     
     __example code__
     <br> 
