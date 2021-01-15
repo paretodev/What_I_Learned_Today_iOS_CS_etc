@@ -1,4 +1,4 @@
-# Learn Job Seeking The Hard Way
+# 취준중 작은 실패 덕분에 알게된 것들. 고맙다 내 퇴비 💩
 
 ### 1.13(수)의 퇴비💩 용 실패 기록<br>
 
