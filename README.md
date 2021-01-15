@@ -77,6 +77,7 @@
 
 
 __3. View Controller Life Cycle__<br>
+
 [참고자료 - zeddiOS](https://zeddios.tistory.com/43)
 
 ![](./images/2021-01-14-21-42-09.png)<br>
@@ -156,10 +157,11 @@ __3. View Controller Life Cycle__<br>
   [zeddiOS 참고](https://zeddios.tistory.com/516)
   <br>
      * main(UI, serial)큐는 코드 블록들을 시리얼하게 처리하지만, 유아이 작업 외의 블락 가능성이 있는 작업을 디스패치 하면 안 된다.반면, global(non-UI, concurrent)는 일련의 코드 블록들을 이전 작업의 완료 여부와 관계없이 가용한 쓰레드에서 진행시켜 버려, 각 블록의 완료 순서에 대한 컨트롤이 없다. 만약, 일련의 작업이 선후관계를 가져야하고, 의존성이 있다면 문제가 생긴다.
-    * __메인 큐__ 가 아닌 큐에서 멀티스레딩을 하면서, 일련의 블록들을 __serially dispatch__ 하고 싶으면, __"serial한 큐를 직접 인스턴스화 하여"__ 사용하면 된다. 
+    * __메인 큐__ 가 아닌 큐에서 멀티스레딩을 하면서, 일련의 블록들을 __serially dispatch__ 하고 싶으면, __"serial한 큐를 직접 인스턴스화 하여"__ 사용하면 된다.<br><br>
     * [출처](https://zeddios.tistory.com/516)<br>
-  
-      ```swift
+    * example code<br><br>
+     
+    ```swift
 
       let zeddQueue = DispatchQueue(label: "zedd")
       zeddQueue.async {
@@ -177,10 +179,10 @@ __3. View Controller Life Cycle__<br>
       for i in 100...105 {
           print("\(i)👻")
       }
+    ```
+    <br>
 
-      ```
-      
-      ![](./images/2021-01-15-11-27-49.png)<br>
+    ![](./images/2021-01-15-11-27-49.png)<br>
 
 4.  __iOS 개발시 디버깅 어떻게 함? 🏋🏻‍♀️🔥__ <br>
     [스탠포드 cs193p 강좌 session 참고](https://www.youtube.com/watch?v=-UtIg4Lt7T8&t=319s)
