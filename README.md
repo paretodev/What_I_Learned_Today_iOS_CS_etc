@@ -1,6 +1,6 @@
 # Learn Job Seeking The Hard Way
 
-### 1.13(수)의 비료💩용 실패 기록<br>
+### 1.13(수)의 퇴비💩 용 실패 기록<br>
 
 
 1. TCP vs. UDP의 차이?
@@ -113,31 +113,23 @@ __3. View Controller Life Cycle__<br>
 3. 2nd view did disappear
 4. 1st view did appear
 
-
-# 보완 !!
-## 메모리 사용을 줄여야 하는 이유? 요즘 기기는 램 용량도 좋은데 ??
-1. **사용자 경험**
-   1. **앱 런칭 속도 빨라짐.**
-   2. **앱이 메모리에 머무르는 시간이 길어짐. 램 메모리 부족으로, 앱이 백그라운드에 있을 때, iOS에 의해서 종료되는 현상이 없어짐.그만큼 멀티태스킹하는 앱이 많아질 경우**
-   3. **다른 앱들이 메모리에 머무르는 시간이 길어질 수 있다.**
-
-
 <br>
 <br>
 <br>
 
-## 1.14(목) - 비료💩용 실패 기록 <br>
+## 1.14(목) - 퇴비 💩 용 실패 기록 <br>
 
 1. Frame & Bound의 차이?
   
    1. Frame : __Superview의 좌표계에 있어, UIView를 감쌀 수 있는 최소 크기의 사각형__ 의 좌표와 사이즈<br>
    2. Bound : UIView자체의, 좌표와 사이즈<br>
-   3. 두 개의 좌표는 다른 게 자명한데, UIView의 프레임 바운드의 사이즈가 달라지는 경우는?
-       * 사진을 봐봐 !!
+   3. 두 개의 좌표는 다른 게 자명한데, UIView의 프레임 바운드의 사이즈가 달라지는 경우는?<br>
+        * 사진을 봐봐 !!<br>
           ![](./images/2021-01-15-09-54-17.png)
         * 직사각형 모양의 UIView가 50도 rotate됨.
         * __frame, bound의 width엔 height가 달라질 수 있는 거야?__
-          * frame : UIView를 감싸는 최소 크기의 바운딩 박스임
+          * frame : UIView를 감싸는 최소 크기의 바운딩 박스임<br>
+
             ![](./images/2021-01-15-09-57-08.png)
           * 회전 후에 이렇게 됨
             * 이 뷰의 바운드는 여전히
@@ -165,67 +157,107 @@ __3. View Controller Life Cycle__<br>
   <br>
      * main(UI, serial)큐는 코드 블록들을 시리얼하게 처리하지만, 유아이 작업 외의 블락 가능성이 있는 작업을 디스패치 하면 안 된다.반면, global(non-UI, concurrent)는 일련의 코드 블록들을 이전 작업의 완료 여부와 관계없이 가용한 쓰레드에서 진행시켜 버려, 각 블록의 완료 순서에 대한 컨트롤이 없다. 만약, 일련의 작업이 선후관계를 가져야하고, 의존성이 있다면 문제가 생긴다.
     * __메인 큐__ 가 아닌 큐에서 멀티스레딩을 하면서, 일련의 블록들을 __serially dispatch__ 하고 싶으면, __"serial한 큐를 직접 인스턴스화 하여"__ 사용하면 된다. 
+    * [출처](https://zeddios.tistory.com/516)
+  
       ```swift
       let zeddQueue = DispatchQueue(label: "zedd")
-
-
-
       zeddQueue.async {
-
           for i in 1...5 {
-
               print("\(i)🐶")
-
           }
-
           print("==================")
-
       }
-
       zeddQueue.async {
-
           for i in 200...205 {
-
               print("\(i)😍")
-
           }
-
           print("==================")
-
       }
-
-
-
       for i in 100...105 {
-
           print("\(i)👻")
-
-          
-
       }
-
-      출처: https://zeddios.tistory.com/516 [ZeddiOS]  
       ```
+      
       ![](./images/2021-01-15-11-27-49.png)<br>
 
+4.  __iOS 개발시 디버깅 어떻게 함? 🏋🏻‍♀️🔥__ <br>
+    [스탠포드 cs193p 강좌 session 참고](https://www.youtube.com/watch?v=-UtIg4Lt7T8&t=319s)
+    
+    1. __콘솔에 나온 에러 메시지를 통해서, 에러의 종류 및 description을 통해 디버깅 하는 경우.__
+       1. 의도적으로 스토리 보드에 있는 컨트롤에서 연결될 변수를 뷰 컨트롤러에서 삭제해 봄
+        ![](./images/2021-01-15-19-04-14.png)
+        <br>        
+        ![](./images/2021-01-15-19-05-51.png)
+        <br>
+        * 2021-01-15 19:05:01.166738+0900 Lecture 7 - Concentration[8614:389693] *** Terminating app due to uncaught exception __'NSUnknownKeyException'__, reason: '[<Lecture_7___Concentration.ConcentrationViewController 0x7f99404117c0> setValue:forUndefinedKey:]: this class is not key value coding-compliant for the key firstButton.'
+    *** First throw call stack: ~~<br>
 
-  
+        2. 메세지에서 __firstButton__ 이라는 요소와 키-발류 매칭에 문제가 생겼다는 수준으로 파악 가능<br><br>
+    2. __에러가 난 부분을 정밀하게 파헤칠 __브레이크 포인트__ 설정법__<br>
+   
+       ![](./images/2021-01-15-19-33-07.png)
+       1. 브레이크 포인트를 특정 라인에 설치해 둔다.
+          1. 그러면 코드가 실행되다가 그 포인트에서 멈추어, 지정한 곳 부터 라인 바이 라인으로 실행된다.
+       2. 라인이 아니라,Exception이 발생한 시점으로 설정할 수도 있다. __ 다양한 타이밍에 멈출 수 있다. __
+          1. 그러면, __콘솔창에 에러 메세지를 던지지 않고, 그저 objc exception 객체를 던진 파트에서 멈춘다__. 
+       3. 의심 지역에 브레이크 포인트를 잘 설정했다면, 멈춘 후에, 그때 부터 라인 바이 라인으로 step(한 걸음씩 내딛기) 한다. 
+        ![](./images/2021-01-15-19-35-09.png) <br><br>
 
-  <br>
-4. __iOS 개발시 디버깅 어떻게 함?__ 🏋🏻‍♀️🔥 <br><br>
+            * 서브 루틴을 만나면, 그 서브 루틴으로 step into 하여 라인 바이 라인 할 수 있다.  
+        <br>
+        ![](./images/2021-01-15-19-35-58.png) <br><br>
+
+            * 시뮬레이터를 지켜보면서, 어떤 라인에서 앱이 크래시 하여 꺼지는 지 파악한다.
+        <br>
+              <br>
+              * 현재 카운트 2에서 크래시 되도록 설정한 상황<br>
+              
+                ![](./images/2021-01-15-19-39-44.png)
+              
+              * 크래시 한다 !!<br>
+                * 이 라인에서 ...<br><br>
+                  ![](./images/2021-01-15-19-41-23.png) <br>
+                * 멈춰 버린 것이다.<br><br>
+                  ![](./images/2021-01-15-19-42-16.png)<br>
+              
+              * 흠 .. 일단 플립 카운트가 2면 크래시 하라고 내가 했었네 ?.. 지금 플립 카운트를 확인한다 !!
+                * XCODE는 각 타이밍 마다 "Memory Hierarhcy"로 각 변수들이 현재 어떤 값, 객체가 저장되어 있는지 알려준다.
+                * 크래시 하기 직전, 플립 카운트 변수는 2였던 것이다 ..<br> 
+                ![](./images/2021-01-15-19-45-25.png)
+                * 옆에 디버깅 창에 각 객체와 변수를 프린트해서 상태를 아주 상세하게 볼 수 있다.
+                  * po - (print object), p - (print in human readable form)
+                  * "p flipCount"를 해보자<br><br>
+                    ![](./images/2021-01-15-19-47-28.png)
+                    * 현재 0번 레지스터에 2로 저장되어 있다.
+                    * 그렇다면, 다음 라인의 if flipcount == 2 { exit(-1) }을 만나기 때문에,
+                    * 바로 ,,, 그,,, 그래서,,, 앱이 꺼지던 거였던 것이다.
+
+    3. 결론, 
+       1. 콘솔창에서 메세지를 주면, Exception, Error 메세지, 해당하는 변수에 대하여 알려줘서 그걸로 해결할 수 있다면 -> 아주 좋다. BUT,
+       2. 정확히 어떤 라인에서, 어떤 상황에서 깨지는 지 알아야 해결이 가능한, 나같은 사람은,,,
+          1. Exception에 대하여 브레이크 포인트 설정
+          2. 의심가는 Dangerous Section에 브레이크 포인트 설정 후
+             1. Step By Step 진행해가며, <-> 시뮬레이터도 동시 참고
+             2. 앱이 크래시 되는 라인을 파악하고
+             3. 크래시되기 직전에 여러 변수들의 상태를 Memory Hierarchy 와 lldb 창에 p -, po - 명령어를 통해서 정확히 확인하며, 앱이 크래시한 원인을 파악하면 된다.
+
+    4. 훈훈한 결론 +
+       1. 공부하기 전에는 너무 어려워 보여서 피한 것들이, 막상 알고보면, 상식적인 단계가 결합되어 있는 것에 불과하고, 그저 시간을 들여서 공부해내면 되는 경우가 많은 것 같다.
+       2. " 닝겐은 쉽게 좌절하지만, 보통 근거 없는 좌절감에 불과한 경우가 많다. "
+       3. 스탠포드 iOS 수업 짱 ... 보물과도 같다 ... 꼭 들어봐야지 !!<br><br>
+
 5. struct vs. class 차이<br><br>
    1. class pass by reference<br>
       * gives pointer when passed<br>
       * refering to the same instance<br>
       * (+) inheritance is possible<br>
    2. struct pass by value<br>
-      * copied when passed<br>
-<br>
+      * copied when passed<br><br>
 
-7. ⭐️⭐️ Observable Object를 직접 구현한다면 ? 어떻게 옵저버 패턴을 구현할 것인가 ⭐️⭐️ <br><br>
-  
-  [참고](https://linsaeng.tistory.com/6)<br>
-  [디자인 패턴 - 공부할 것](https://linsaeng.tistory.com/category/Swift/%EB%94%94%EC%9E%90%EC%9D%B8%ED%8C%A8%ED%84%B4)<br>
+6. ⭐️⭐️ Observable Object를 직접 구현한다면 ? 어떻게 옵저버 패턴을 구현할 것인가 ⭐️⭐️ <br>
+   <br>
+
+  [참고 - 옵저버 패턴 구현 - 스위프트](https://linsaeng.tistory.com/6)<br><br>
 
    ```swift
   
@@ -263,5 +295,16 @@ __3. View Controller Life Cycle__<br>
     }
 }
 ```
+
+7. __테이블뷰 오토매틱 셀 하이트 설정 어떻게 하는가?__
+8. __요즘 램 용량도 큰데, 군디 메모리 최적화를 하는 이유는?__
+
+
+### < 1.14(목) 퇴비용💩 실패 기록> 을 마무리하며,,, 이 링크를 미래의 유저가 흡족하게 내 앱을 사용하는 장면을 상상하면서, 공부 🙇🏻‍♂️ 👨🏻‍💻 합시다.
+
+  * [디자인 패턴](https://linsaeng.tistory.com/category/Swift/%EB%94%94%EC%9E%90%EC%9D%B8%ED%8C%A8%ED%84%B4)<br>
+  
+
+
 
 
