@@ -115,8 +115,7 @@ __3. View Controller Life Cycle__<br>
 4. 1st view did appear
 
 <br>
-<br>
-<br>
+-------
 
 ## 1.14(목) - 퇴비 💩 용 실패 기록 <br>
 
@@ -159,7 +158,7 @@ __3. View Controller Life Cycle__<br>
     * main(UI, serial)큐는 코드 블록들을 시리얼하게 처리하지만, 유아이 작업 외의 블락 가능성이 있는 작업을 디스패치 하면 안 된다.반면, global(non-UI, concurrent)는 일련의 코드 블록들을 이전 작업의 완료 여부와 관계없이 가용한 쓰레드에서 진행시켜 버려, 각 블록의 완료 순서에 대한 컨트롤이 없다. 만약, 일련의 작업이 선후관계를 가져야하고, 의존성이 있다면 문제가 생긴다. 
     * __메인 큐__ 가 아닌 큐에서 멀티스레딩을 하면서, 일련의 블록들을 __serially dispatch__ 하고 싶으면, __"serial한 큐를 직접 인스턴스화 하여"__ 사용하면 된다.<br>[리서치 자료 출처](https://zeddios.tistory.com/516)<br>
     <br>
-    
+
   ```swift
   let zeddQueue = DispatchQueue(label: "zedd")
     zeddQueue.async {
@@ -336,7 +335,7 @@ __3. View Controller Life Cycle__<br>
               * tableView.rowHeight를 오토매틱으로 설정하는 것은 -> 테이블 뷰가 -> 오토레이아웃 엔진에게 셀의 행 길이 연산 방정식을 풀어달라고 위탁해야하는 것인데 -> 예측치를 제공하면 -> 오토 레이 아웃 엔진이 guessing iteration 해야하는 범위를 줄여서 -> 컨텐츠에 따라 테이블뷰가 높이를 결정하고 테이블을 그리는 시간을 줄여준다.<br><br>
          
     3. 이렇게 하면, tableView.reloadData() 때마다, cell height가 컨텐트 뷰의 서브뷰(사이즈)에 의한 intrinsic size + autolayout constraint가 고려되어 적용된다.<br>
-
+<br>
 
 ### < 1.14(목) 퇴비용💩 실패 기록> 을 마무리하며,,, 이 링크를 미래의 유저가 흡족하게 내 앱을 사용하는 장면을 상상하면서, 공부 🙇🏻‍♂️ 👨🏻‍💻 합시다.
 
@@ -344,4 +343,6 @@ __3. View Controller Life Cycle__<br>
   * 요즘 iPhone12📱 같은 경우 램 용량도 커졌는데, 굳이 앱에서 메모리 최적화를 하는 이유는?
     * WWDC 2018을 공부해보자.!! <br>
     [WWDC2018 iOS Memory Deep Dive](https://developer.apple.com/videos/play/wwdc2018/416/)
-  
+
+<br>
+-----
