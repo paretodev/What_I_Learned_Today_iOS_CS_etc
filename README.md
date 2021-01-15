@@ -1,4 +1,4 @@
-# 취준중 작은 실패 덕분에 알게된 것들. 고맙다 내 퇴비 💩
+# 취준중 작은 실패 덕분에 알게된 것들. 고맙다 내 퇴비들 💩
 
 ### 1.13(수)의 퇴비💩 용 실패 기록<br>
 
@@ -345,4 +345,5 @@ __3. View Controller Life Cycle__<br>
     [WWDC2018 iOS Memory Deep Dive](https://developer.apple.com/videos/play/wwdc2018/416/)
 
 <br>
------
+
+----------
