@@ -184,7 +184,6 @@ __3. View Controller Life Cycle__<br>
 
     ```
     <br>
-
     ![](./images/2021-01-15-11-27-49.png)<br>
 
 4.  __iOS 개발시 디버깅 어떻게 함? 🏋🏻‍♀️🔥__ <br>
@@ -193,9 +192,11 @@ __3. View Controller Life Cycle__<br>
     1. __콘솔에 나온 에러 메시지를 통해서, 에러의 종류 및 description을 통해 디버깅 하는 경우.__
        1. 의도적으로 스토리 보드에 있는 컨트롤에서 연결될 변수를 뷰 컨트롤러에서 삭제해 봄
         ![](./images/2021-01-15-19-04-14.png)
-        <br>        
+        <br>
+        
         ![](./images/2021-01-15-19-05-51.png)
         <br>
+        
         * 2021-01-15 19:05:01.166738+0900 Lecture 7 - Concentration[8614:389693] *** Terminating app due to uncaught exception __'NSUnknownKeyException'__, reason: '[<Lecture_7___Concentration.ConcentrationViewController 0x7f99404117c0> setValue:forUndefinedKey:]: this class is not key value coding-compliant for the key firstButton.'
     *** First throw call stack: ~~<br>
 
