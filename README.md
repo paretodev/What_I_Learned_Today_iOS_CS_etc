@@ -157,9 +157,10 @@ __3. View Controller Life Cycle__<br>
   <br>
      * main(UI, serial)큐는 코드 블록들을 시리얼하게 처리하지만, 유아이 작업 외의 블락 가능성이 있는 작업을 디스패치 하면 안 된다.반면, global(non-UI, concurrent)는 일련의 코드 블록들을 이전 작업의 완료 여부와 관계없이 가용한 쓰레드에서 진행시켜 버려, 각 블록의 완료 순서에 대한 컨트롤이 없다. 만약, 일련의 작업이 선후관계를 가져야하고, 의존성이 있다면 문제가 생긴다.
     * __메인 큐__ 가 아닌 큐에서 멀티스레딩을 하면서, 일련의 블록들을 __serially dispatch__ 하고 싶으면, __"serial한 큐를 직접 인스턴스화 하여"__ 사용하면 된다. 
-    * [출처](https://zeddios.tistory.com/516)
+    * [출처](https://zeddios.tistory.com/516)<br>
   
       ```swift
+
       let zeddQueue = DispatchQueue(label: "zedd")
       zeddQueue.async {
           for i in 1...5 {
@@ -176,6 +177,7 @@ __3. View Controller Life Cycle__<br>
       for i in 100...105 {
           print("\(i)👻")
       }
+
       ```
       
       ![](./images/2021-01-15-11-27-49.png)<br>
@@ -192,8 +194,8 @@ __3. View Controller Life Cycle__<br>
         * 2021-01-15 19:05:01.166738+0900 Lecture 7 - Concentration[8614:389693] *** Terminating app due to uncaught exception __'NSUnknownKeyException'__, reason: '[<Lecture_7___Concentration.ConcentrationViewController 0x7f99404117c0> setValue:forUndefinedKey:]: this class is not key value coding-compliant for the key firstButton.'
     *** First throw call stack: ~~<br>
 
-        2. 메세지에서 __firstButton__ 이라는 요소와 키-발류 매칭에 문제가 생겼다는 수준으로 파악 가능<br><br>
-    2. __에러가 난 부분을 정밀하게 파헤칠 __브레이크 포인트__ 설정법__<br>
+        1. 메세지에서 __firstButton__ 이라는 요소와 키-발류 매칭에 문제가 생겼다는 수준으로 파악 가능<br><br>
+    1. __에러가 난 부분을 정밀하게 파헤칠 __브레이크 포인트__ 설정법__<br>
    
        ![](./images/2021-01-15-19-33-07.png)
        1. 브레이크 포인트를 특정 라인에 설치해 둔다.
@@ -205,20 +207,28 @@ __3. View Controller Life Cycle__<br>
 
             * 서브 루틴을 만나면, 그 서브 루틴으로 step into 하여 라인 바이 라인 할 수 있다.  
         <br>
-        ![](./images/2021-01-15-19-35-58.png) <br><br>
 
-            * 시뮬레이터를 지켜보면서, 어떤 라인에서 앱이 크래시 하여 꺼지는 지 파악한다.
+        ![](./images/2021-01-15-19-35-58.png) 
+        <br><br>
+
+          시뮬레이터를 지켜보면서, 어떤 라인에서 앱이 크래시 하여 꺼지는 지 파악한다.
+
         <br>
+
+       * 현재 카운트 2에서 크래시 되도록 설정한 상황<br>
+              
+            ![](./images/2021-01-15-19-39-44.png) <br>
+              
+            * 크래시 한다 !! 
               <br>
-              * 현재 카운트 2에서 크래시 되도록 설정한 상황<br>
-              
-                ![](./images/2021-01-15-19-39-44.png)
-              
-              * 크래시 한다 !!<br>
-                * 이 라인에서 ...<br><br>
-                  ![](./images/2021-01-15-19-41-23.png) <br>
+            
+            * 이 라인에서 ...
+                <br><br>
+                  ![](./images/2021-01-15-19-41-23.png)
+                  <br>
                 * 멈춰 버린 것이다.<br><br>
-                  ![](./images/2021-01-15-19-42-16.png)<br>
+                  ![](./images/2021-01-15-19-42-16.png)
+                  <br>
               
               * 흠 .. 일단 플립 카운트가 2면 크래시 하라고 내가 했었네 ?.. 지금 플립 카운트를 확인한다 !!
                 * XCODE는 각 타이밍 마다 "Memory Hierarhcy"로 각 변수들이 현재 어떤 값, 객체가 저장되어 있는지 알려준다.
@@ -232,7 +242,7 @@ __3. View Controller Life Cycle__<br>
                     * 그렇다면, 다음 라인의 if flipcount == 2 { exit(-1) }을 만나기 때문에,
                     * 바로 ,,, 그,,, 그래서,,, 앱이 꺼지던 거였던 것이다.
 
-    3. 결론, 
+    2. 결론, 
        1. 콘솔창에서 메세지를 주면, Exception, Error 메세지, 해당하는 변수에 대하여 알려줘서 그걸로 해결할 수 있다면 -> 아주 좋다. BUT,
        2. 정확히 어떤 라인에서, 어떤 상황에서 깨지는 지 알아야 해결이 가능한, 나같은 사람은,,,
           1. Exception에 대하여 브레이크 포인트 설정
@@ -241,7 +251,7 @@ __3. View Controller Life Cycle__<br>
              2. 앱이 크래시 되는 라인을 파악하고
              3. 크래시되기 직전에 여러 변수들의 상태를 Memory Hierarchy 와 lldb 창에 p -, po - 명령어를 통해서 정확히 확인하며, 앱이 크래시한 원인을 파악하면 된다.
 
-    4. 훈훈한 결론 +
+    3. 훈훈한 결론 +
        1. 공부하기 전에는 너무 어려워 보여서 피한 것들이, 막상 알고보면, 상식적인 단계가 결합되어 있는 것에 불과하고, 그저 시간을 들여서 공부해내면 되는 경우가 많은 것 같다.
        2. " 닝겐은 쉽게 좌절하지만, 보통 근거 없는 좌절감에 불과한 경우가 많다. "
        3. 스탠포드 iOS 수업 짱 ... 보물과도 같다 ... 꼭 들어봐야지 !!<br><br>
@@ -257,7 +267,7 @@ __3. View Controller Life Cycle__<br>
 6. ⭐️⭐️ Observable Object를 직접 구현한다면 ? 어떻게 옵저버 패턴을 구현할 것인가 ⭐️⭐️ <br>
    <br>
 
-  [참고 - 옵저버 패턴 구현 - 스위프트](https://linsaeng.tistory.com/6)<br><br>
+[참고 - 옵저버 패턴 구현 - 스위프트](https://linsaeng.tistory.com/6)<br><br>
 
    ```swift
   
