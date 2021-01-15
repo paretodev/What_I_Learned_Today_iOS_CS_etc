@@ -159,26 +159,29 @@ __3. View Controller Life Cycle__<br>
      * main(UI, serial)큐는 코드 블록들을 시리얼하게 처리하지만, 유아이 작업 외의 블락 가능성이 있는 작업을 디스패치 하면 안 된다.반면, global(non-UI, concurrent)는 일련의 코드 블록들을 이전 작업의 완료 여부와 관계없이 가용한 쓰레드에서 진행시켜 버려, 각 블록의 완료 순서에 대한 컨트롤이 없다. 만약, 일련의 작업이 선후관계를 가져야하고, 의존성이 있다면 문제가 생긴다.
     * __메인 큐__ 가 아닌 큐에서 멀티스레딩을 하면서, 일련의 블록들을 __serially dispatch__ 하고 싶으면, __"serial한 큐를 직접 인스턴스화 하여"__ 사용하면 된다.<br><br>
     * [출처](https://zeddios.tistory.com/516)<br>
-    * example code<br><br>
-     
-    ```swift
+    
+    example code
+    <br> 
 
-      let zeddQueue = DispatchQueue(label: "zedd")
-      zeddQueue.async {
-          for i in 1...5 {
-              print("\(i)🐶")
-          }
-          print("==================")
+    ``` swift
+
+    let zeddQueue = DispatchQueue(label: "zedd")
+    zeddQueue.async {
+      for i in 1...5 {
+        print("\(i)🐶")
       }
-      zeddQueue.async {
-          for i in 200...205 {
-              print("\(i)😍")
-          }
-          print("==================")
+        print("==================")
+      }
+    zeddQueue.async {
+      for i in 200...205 {
+       print("\(i)😍")
+      }
+        print("==================")
       }
       for i in 100...105 {
-          print("\(i)👻")
+        print("\(i)👻")
       }
+
     ```
     <br>
 
