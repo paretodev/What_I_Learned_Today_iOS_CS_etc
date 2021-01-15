@@ -163,8 +163,7 @@ __3. View Controller Life Cycle__<br>
     __example code__
     <br> 
 
-      ```swift
-
+    ```swift
       let zeddQueue = DispatchQueue(label: "zedd")
       zeddQueue.async {
         for i in 1...5 {
@@ -182,11 +181,9 @@ __3. View Controller Life Cycle__<br>
       for i in 100...105 {
         print("\(i)👻")
       } 
-    
     }
-
     ``` 
-    <br>
+    
     [출처](https://zeddios.tistory.com/516)
     <br>
 
