@@ -160,34 +160,31 @@ __3. View Controller Life Cycle__<br>
     * __메인 큐__ 가 아닌 큐에서 멀티스레딩을 하면서, 일련의 블록들을 __serially dispatch__ 하고 싶으면, __"serial한 큐를 직접 인스턴스화 하여"__ 사용하면 된다.
     [리서치 자료 출처](https://zeddios.tistory.com/516)<br>
     <br>
-    
-    ```swift
 
-      let zeddQueue = DispatchQueue(label: "zedd")
-      zeddQueue.async {
-        for i in 1...5 {
-          print("\(i)🐶")
-       }
-          print("==================")
-       }
-      zeddQueue.async {
-        for i in 200...205 {
-          print("\(i)😍")
-      }
-        print("==================")
-      }
-
-      for i in 100...105 {
-        print("\(i)👻")
-      } 
+  ```swift
+  let zeddQueue = DispatchQueue(label: "zedd")
+    zeddQueue.async {
+       for i in 1...5 {
+        print("\(i)🐶")
+     }
+       print("==================")
+     }
+     zeddQueue.async {
+      for i in 200...205 {
+        print("\(i)😍")
+     }
+      print("==================")
     }
-    
-    ```
+    for i in 100...105 {
+       print("\(i)👻")
+    } 
+  }  
+  ```
+
   <br>
 
-
-![](./images/2021-01-15-11-27-49.png)<br>
- <br>
+  * ![](./images/2021-01-15-11-27-49.png)<br>
+  <br>
 
 
 4.  __iOS 개발시 디버깅 어떻게 함? 🏋🏻‍♀️🔥__ <br>
