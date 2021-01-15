@@ -343,6 +343,7 @@ __3. View Controller Life Cycle__<br>
   * 요즘 iPhone12📱 같은 경우 램 용량도 커졌는데, 굳이 앱에서 메모리 최적화를 하는 이유는?
     * WWDC 2018을 공부해보자.!! <br>
     [WWDC2018 iOS Memory Deep Dive](https://developer.apple.com/videos/play/wwdc2018/416/)
+    [stanford course](https://www.youtube.com/watch?v=mgqvjN874dQ&list=PL3d_SFOiG7_8ofjyKzX6Nl1wZehbdiZC_&index=13) 
 
 <br>
 
