@@ -316,14 +316,35 @@ __3. View Controller Life Cycle__<br>
 ```
 
 7. __테이블뷰 오토매틱 셀 하이트 설정 어떻게 하는가?__
-8. __요즘 램 용량도 큰데, 군디 메모리 최적화를 하는 이유는?__
+   
+   목표 : Cell의 contentView가 포함하는 서브뷰들의 intrinsic size와, 서브뷰 <-> contentView 간의 오토레이 아웃에 따라, 테이블뷰가 업데이트 될 때마다,
+   셀이 거기에 맞게 자신의 크기를 조절하게 하는 방법은 ?
+
+    ![](./images/2021-01-15-21-59-18.png)
+
+  * iOS 8.0 ~
+    * viewDidLoad에서<br>
+     
+    ```swift
+    tableView.rowHeight = UITableView.automaticDimension
+    tableView.estimatedRowHeight = 63.5
+    ```
+      1. __tableView의 rowheight에 오토매틱 디맨션 컨스탄트 지정__
+      2. __예측치 제공__
+         1. 로우의 예상 평균 높이를 제공하면 되어, 테이블뷰의 scrollview를 만들 때 사용하나
+            * adjusting이 잘 되니 예측이 많이 틀려도 지장이없다.
+         2. 그러나?
+            * Only if your __row heights have extreme variability__ (e.g. differ by an order of magnitude) and you notice __the scroll indicator "jumping" as you scroll__ should you bother __implementing tableView:estimatedHeightForRowAtIndexPath: to do the minimal calculation required to return a more accurate estimate for each row.__ : 로우 하이트들이 평균 주위에 모여있는 게 아니라, 서로 너무 제각각이면, 다음의 __tableView:estimatedHeightForRowAtIndexPath:__ delegate method를 통해서, 인덱스에 해당하는 로우 하이트가 어느 정도 될지 알려주어야 한다.<br>
+             
+              * tableView.rowHeight를 오토매틱으로 설정하는 것은 -> 테이블 뷰가 -> 오토레이아웃 엔진에게 셀의 행 길이 연산 방정식을 풀어달라고 위탁해야하는 것인데 -> 예측치를 제공하면 -> 오토 레이 아웃 엔진이 guessing iteration 해야하는 범위를 줄여서 -> 컨텐츠에 따라 테이블뷰가 높이를 결정하고 테이블을 그리는 시간을 줄여준다.<br><br>
+         
+    3. 이렇게 하면, tableView.reloadData() 때마다, cell height가 컨텐트 뷰의 서브뷰(사이즈)에 의한 intrinsic size + autolayout constraint가 고려되어 적용된다.<br>
 
 
 ### < 1.14(목) 퇴비용💩 실패 기록> 을 마무리하며,,, 이 링크를 미래의 유저가 흡족하게 내 앱을 사용하는 장면을 상상하면서, 공부 🙇🏻‍♂️ 👨🏻‍💻 합시다.
 
   * [디자인 패턴](https://linsaeng.tistory.com/category/Swift/%EB%94%94%EC%9E%90%EC%9D%B8%ED%8C%A8%ED%84%B4)<br>
+  * 요즘 iPhone12📱 같은 경우 램 용량도 커졌는데, 굳이 앱에서 메모리 최적화를 하는 이유는?
+    * WWDC 2018을 공부해보자.!! <br>
+    [WWDC2018 iOS Memory Deep Dive](https://developer.apple.com/videos/play/wwdc2018/416/)
   
-
-
-
-
