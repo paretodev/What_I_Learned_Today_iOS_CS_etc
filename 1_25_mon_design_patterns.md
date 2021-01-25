@@ -106,8 +106,6 @@ class Subject {
 
 [최애 유투브 - Web Dev Simplified - Builder Pattern 참고](https://www.youtube.com/watch?v=M7Xi1yO_s8E&t=328s)
 
-![](./images/2021-01-25-11-11-43.png)
-
 ```javascript
 class User {
     constructor(name){
