@@ -1,4 +1,4 @@
-# Frequent Design Patterns
+# Useful Design Patterns for iOS
 
 ## 1. Singleton
 
